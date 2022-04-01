@@ -1,0 +1,31 @@
+version: '2.2'
+services:
+  mysql:
+    image: mysql
+    container_name: db
+    ports:
+      - 3306:3306
+    environment: 
+      MYSQL_ROOT_PASSWORD: whatever
+      MYSQL_DATABASE: Members_info
+#   volumes:
+#      - practice-data:/var/lib/mysql/data
+  redis:
+    image: redis
+    container_name: cache
+    ports:
+      - 6379:6379
+#    volumes:
+#      - practice-data:/var/lib/redis/data
+  api:
+    build: .
+    image: restful-api
+    container_name: api
+    ports:
+      - 8000:8000
+    restart: on-failure
+    depends_on:
+      - redis
+      - mysql
+#volumes:
+#  practice-data:
